@@ -6,7 +6,7 @@ function setup(){
   // 配列をランダムに初期化する
   let scores = [];
   for(let i = 0; i < 10; i++){
-    scores[i] = random(20, 100); // 60以上100未満のランダムな数を代入
+    scores[i] = random(0, 400); // 20以上100未満のランダムな数を代入
   }
 
   // 横線を引く
@@ -18,6 +18,13 @@ function setup(){
   const dx = width / scores.length;
   let px, py; // 線を引くために一つ前の点を覚えておく変数
   for(let i = 0; i < scores.length; i++){
-    // BLANK[1]
+    let x = i * dx + dx / 2;
+    let y = height - scores[i]; // 下が0になるように反転
+    // 点を描く
+    ellipse(x, y, 6, 6);
+    //線を引く
+    line(px,py,x,y);
+    px = x;//現在の点を次の線の始点更新
+    py = y;
   }
 }

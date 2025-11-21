@@ -1,6 +1,9 @@
 // カレンダーを描画しよう
 function setup(){
   createCanvas(200, 200);
+  background(0);      // 黒背景
+  fill(255);          // 白文字
+  textSize(16);       // 文字大きく
   drawCalendar(2025, 10);
 }
 
@@ -14,18 +17,25 @@ function drawCalendar(y, m){
 
   let dow = dayOfWeek(y, m, 1);
   for(let d = 1; d <= daysInMonth(y, m); d++){
-    // BLANK[3] まずは daysInYear, dayOfWeek を作ろう
+    const x = (dow % 7) * (width / 7);
+    const y = 40 + floor(dow / 7) * 20;
+
+    fill(255);
+    noStroke();
+    text(d, x + 5, y);
+
+    dow++;
   }
 }
-
+//うるう年判定
 function isLeapYear(y){
   return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);
 }
-
+//一年は何日？
 function daysInYear(y){
-  // BLANK[1] hint: 閏年なら366日、そうでなければ365日
+  return isLeapYear(y) ? 366 : 365;
 }
-
+//ひと月に何日ある？
 function daysInMonth(y, m){
   if(m == 2){
     return isLeapYear(y) ? 29 : 28;
@@ -41,15 +51,29 @@ function daysInMonth(y, m){
 function dayOfYear(y, m, d){
   let count = 0;
   for(let i = 1; i < m; i++){
-    count += daysInMonth(y, i);
+    count += daysInMonth(y, i);//次の月になる
   }
   return count + d;
 }
 
 function dayOfWeek(y, m, d){
-  // BLANK[2] hint: 曜日がわかる日からの経過日数を求め7の剰余を取る　たとえば1970年1月1日木曜日
-}
+  let days = 0;
 
+  // 1970年から前後に移動する
+  if (y >= 1970) {
+    for (let i = 1970; i < y; i++) {
+      days += daysInYear(i);
+    }
+  } else {
+    for (let i = y; i < 1970; i++) {
+      days -= daysInYear(i);
+    }
+  }
+  days += dayOfYear(y, m, d);
+
+  // 1970/1/1 は木曜（=4）
+  return (days + 4) % 7;
+}
 function dayOfWeekAsString(dow){
   const a = ["日", "月", "火", "水", "木", "金", "土"];
   return a[dow];

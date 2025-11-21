@@ -1,0 +1,304 @@
+{
+  "data": [
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:16:22",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    // BLANK[3] \r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n}\r\n\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:16:25",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    // BLANK[3] \r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n}\r\n\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:16:45",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    // BLANK[3] \r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n}\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:16:55",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    // BLANK[3] \r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:18:25",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:19:51",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:19:56",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:20:51",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:20:59",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:21:04",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:21:17",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:21:29",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:24:20",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:24:22",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:24:55",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:27:20",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:28:35",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n  background(0);      // ← 黒背景にする（白文字が見える）\r\n  fill(255);          // ← 白文字\r\n  textSize(16);       // ← 文字を大きくする\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:28:46",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n  background(0);      // ← 黒背景にする（白文字が見える）\r\n  fill(255);          // ← 白文字\r\n  textSize(16);       // ← 文字を大きくする\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:29:00",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  drawCalendar(2025, 10);\r\n  background(0);      // ← 黒背景にする（白文字が見える）\r\n  fill(255);          // ← 白文字\r\n  textSize(16);       // ← 文字を大きくする\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "savedAt": "2025/11/18 11:29:43",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "// カレンダーを描画しよう\r\nfunction setup(){\r\n  createCanvas(200, 200);\r\n  background(0);      // 黒背景\r\n  fill(255);          // 白文字\r\n  textSize(16);       // 文字大きく\r\n  drawCalendar(2025, 10);\r\n}\r\n\r\nfunction drawCalendar(y, m){\r\n  for(let i = 0; i < 7; i++){\r\n    const x = i * width / 7;\r\n    const y = 20;\r\n    stroke(255);\r\n    text(dayOfWeekAsString(i), x, y);\r\n  }\r\n\r\n  let dow = dayOfWeek(y, m, 1);\r\n  for(let d = 1; d <= daysInMonth(y, m); d++){\r\n    const x = (dow % 7) * (width / 7);\r\n    const y = 40 + floor(dow / 7) * 20;\r\n\r\n    fill(255);\r\n    noStroke();\r\n    text(d, x + 5, y);\r\n\r\n    dow++;\r\n  }\r\n}\r\n//うるう年判定\r\nfunction isLeapYear(y){\r\n  return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);\r\n}\r\n//一年は何日？\r\nfunction daysInYear(y){\r\n  return isLeapYear(y) ? 366 : 365;\r\n}\r\n//ひと月に何日ある？\r\nfunction daysInMonth(y, m){\r\n  if(m == 2){\r\n    return isLeapYear(y) ? 29 : 28;\r\n  }\r\n  else if(m == 4 || m == 6 || m == 9 || m == 11){\r\n    return 30;\r\n  }\r\n  else{\r\n    return 31;\r\n  }\r\n}\r\n\r\nfunction dayOfYear(y, m, d){\r\n  let count = 0;\r\n  for(let i = 1; i < m; i++){\r\n    count += daysInMonth(y, i);//次の月になる\r\n  }\r\n  return count + d;\r\n}\r\n\r\nfunction dayOfWeek(y, m, d){\r\n  let days = 0;\r\n\r\n  // 1970年から前後に移動する\r\n  if (y >= 1970) {\r\n    for (let i = 1970; i < y; i++) {\r\n      days += daysInYear(i);\r\n    }\r\n  } else {\r\n    for (let i = y; i < 1970; i++) {\r\n      days -= daysInYear(i);\r\n    }\r\n  }\r\n  days += dayOfYear(y, m, d);\r\n\r\n  // 1970/1/1 は木曜（=4）\r\n  return (days + 4) % 7;\r\n}\r\nfunction dayOfWeekAsString(dow){\r\n  const a = [\"日\", \"月\", \"火\", \"水\", \"木\", \"金\", \"土\"];\r\n  return a[dow];\r\n}\r\n"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
