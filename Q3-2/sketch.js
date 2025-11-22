@@ -25,8 +25,22 @@ function draw(){
   rect(0, groundY, width, height - groundY);
 
   // BLANK[1] キャラクターの左右移動
+  let speed = 2; // 通常の速度
+  if (keyIsDown(LEFT_ARROW)) {
+    if (keyIsDown(SHIFT)) speed = 4.0; // SHIFTキーでスピードアップ
+    x -= speed;
+  } 
+  if (keyIsDown(RIGHT_ARROW)) {
+    if (keyIsDown(SHIFT)) speed = 4.0;
+    x += speed;
+  }
 
   // BLANK[2] 重力とジャンプ
+  x += vx;
+  y += vy;
+  vy += g; // 重力は「速度の変化量」
+  if(y < height * 0.8 ){ vy = -1 * vy; }
+
 
   // 速くなりすぎないように制限
   vx = constrain(vx, -20, 20);
