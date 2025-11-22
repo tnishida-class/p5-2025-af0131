@@ -3113,6 +3113,636 @@
         "classCode": ""
       },
       "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:17:52",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        // 通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\nfunction windowResized(){\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n\r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n\r\n  // 重力\r\n  vy += g;\r\n\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  // 端にぶつかったら反転\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1;\r\n  }\r\n\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n\r\n    if(d < size/2 + 25){  //  プレイヤー半径 + 敵半径 \r\n      noLoop(); // アニメーション停止（ゲームオーバー）\r\n      fill(255, 0, 0);\r\n      textSize(50);\r\n      text(\"GAME OVER\", width/2 - 150, height/2);\r\n    }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:18:13",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        // 通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\n\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n\r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n\r\n  // 重力\r\n  vy += g;\r\n\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  // 端にぶつかったら反転\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1;\r\n  }\r\n\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n\r\n    if(d < size/2 + 25){  //  プレイヤー半径 + 敵半径 \r\n      noLoop(); // アニメーション停止（ゲームオーバー）\r\n      fill(255, 0, 0);\r\n      textSize(50);\r\n      text(\"GAME OVER\", width/2 - 150, height/2);\r\n    }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:18:25",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        // 通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\n\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n\r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n\r\n  // 重力\r\n  vy += g;\r\n\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  // 端にぶつかったら反転\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1;\r\n  }\r\n\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n\r\n    if(d < size/2 + 25){  //  プレイヤー半径 + 敵半径 \r\n      noLoop(); // アニメーション停止（ゲームオーバー）\r\n      fill(255, 0, 0);\r\n      textSize(50);\r\n      text(\"GAME OVER\", width/2 - 150, height/2);\r\n    }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:18:38",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        // 通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\nfunction windowResized(){\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n\r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n\r\n  // 重力\r\n  vy += g;\r\n\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  // 端にぶつかったら反転\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1;\r\n  }\r\n\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n\r\n    if(d < size/2 + 25){  //  プレイヤー半径 + 敵半径 \r\n      noLoop(); // アニメーション停止（ゲームオーバー）\r\n      fill(255, 0, 0);\r\n      textSize(50);\r\n      text(\"GAME OVER\", width/2 - 150, height/2);\r\n    }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:28:56",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n  // 重力\r\n  vy += g;\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  // 端にぶつかったら反転かつスピードup\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1.1;\r\n  }\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2 - 150, height/2);\r\n  }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:29:22",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n  // 重力\r\n  vy += g;\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  // 端にぶつかったら反転かつスピードup\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1.1;\r\n  }\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:29:29",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet startTime;        //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  startTime = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  applyGravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let elapsed = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(elapsed < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(elapsed);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction applyGravity(groundY, size){\r\n  // 位置の更新\r\n  x += vx;\r\n  y += vy;\r\n  // 重力\r\n  vy += g;\r\n  // 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n    // ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n    if(enemyX > width || enemyX < 0){\r\n      enemySpeed *= -1;\r\n    }\r\n\r\n    fill(255, 0, 0);\r\n    ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  // 端にぶつかったら反転かつスピードup\r\n  if(enemyX > width || enemyX < 0){\r\n   enemySpeed *= -1.1;\r\n  }\r\n  // 敵を描く（赤い丸）\r\n  fill(255, 0, 0);\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  // ======== 当たり判定 ========\r\n  // プレイヤーとの距離を計算\r\n  let d = dist(x, y, enemyX, enemyY);\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n  }\r\n}"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:50:13",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - startTime) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(time);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n// 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n// ======== カウントダウン後だけ敵を動かす ========\r\n  if ((millis() - startTime) / 1000 >= 3){\r\n    enemyX += enemySpeed;\r\n\r\n// ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  if(enemyX > width || enemyX < 0){// 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\nfunction gameOver(){\r\n  let d = dist(x, y, enemyX, enemyY);// プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n  }\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:58:44",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(time);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  if(enemyX > width || enemyX < 0){// 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n// 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);// プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 16:58:54",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  //画面サイズをウィンドウに合わせる\r\n  createCanvas(windowWidth, windowHeight);\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(time);\r\n    text(count, width/2, height/2);\r\n\r\n    // まだ敵は動かさないので return\r\n    return;\r\n  }\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  if(enemyX > width || enemyX < 0){// 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n// 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);// プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:03:30",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(time);\r\n    text(count, width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n// 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);// プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:03:40",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){      //毎フレーム実行\r\n  //空色の背景\r\n  background(160, 192, 255);\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1; // キャラクターのサイズ\r\n  // 地面\r\n  fill(64, 192, 64);\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x -= speed;\r\n  } \r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    if (keyIsDown(SHIFT)) speed = 4.0;\r\n    x += speed;\r\n  }\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n  \r\n  // ======== カウントダウン表示 ========\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n\r\n    let count = 3 - floor(time);\r\n    text(count, width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n// 地面に着いたら止める（バウンドさせない）\r\n  if (y > groundY - size / 2){\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);// プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){  //プレイヤー半径 + 敵半径 \r\n    noLoop(); // アニメーションdraw()を止める\r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:13:35",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : baseSpeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:13:52",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet speed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : baseSpeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:14:33",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : baseSpeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:14:57",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:15:05",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:15:18",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:17:00",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  x += vx\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:17:23",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  x += vx\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:20:01",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:20:16",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:23:45",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:23:54",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:33:49",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY- size/2 +0.1) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:36:01",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) {\r\n    x += speed;\r\n  } \r\n  if (keyIsDown(LEFT_ARROW)) {\r\n    x -= speed;\r\n  } \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && Math.abs(y - (groundY - size/2)) < 0.1 ) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:37:56",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && Math.abs(y - (groundY - size/2)) < 0.1 ) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:38:22",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && y >= groundY - size/2 - 0.5) {\r\n    vy = -20;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  let time = (millis() - start) / 1000;\r\n\r\n  if(time < 3){       // ======== カウントダウン表示 ========\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  if (y > groundY - size / 2){    // 地面に着いたら止める（バウンドさせない）\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:42:18",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:42:22",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:43:02",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:43:15",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:44:38",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\n  let speed = keyIsDown(SHIFT) ? 4 : basespeed;\r\n  if (keyIsDown(RIGHT_ARROW)) x += speed;\r\n  if (keyIsDown(LEFT_ARROW)) x -= speed; \r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  x += vx;\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:45:49",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\nlet speed;\r\nif (keyIsDown(SHIFT)) {\r\n  speed = 4;\r\n} else {\r\n  speed = basespeed;\r\n}\r\nif (keyIsDown(RIGHT_ARROW)) {\r\n  x += speed;\r\n}\r\nif (keyIsDown(LEFT_ARROW)) {\r\n  x -= speed;\r\n}\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  x += vx;\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
+    },
+    {
+      "dataType": "javascript",
+      "bodyData": {
+        "document": {
+          "workspace": "",
+          "savedAt": "2025/11/22 17:47:11",
+          "sources": [
+            {
+              "fileExtension": "js",
+              "filename": "sketch.js",
+              "content": "//変数を準備する\r\nlet x, y;             //プレーヤーの位置\r\nlet vx, vy;           //プレーヤーの速度\r\nlet basespeed = 2;        //通常の速度\r\nconst g = 1;          //重力の大きさ\r\nlet enemyX, enemyY;   //敵の位置\r\nlet enemySpeed = 2.2; //敵の速度\r\nlet start;            //ゲーム開始時刻\r\nlet onGround = false;\r\n\r\nfunction setup(){     //最初に一度だけ実行\r\n  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる\r\n  //プレーヤーの初期位置\r\n  x = width / 2;\r\n  y = height / 2;\r\n  vx = 0;\r\n  vy = 0;\r\n  // 敵の初期位置\r\n  enemyX = 0;\r\n  enemyY = height * 0.8 - 50;   \r\n  // ゲーム開始時間を記録\r\n  start = millis();\r\n}\r\n\r\nfunction windowResized(){     //画面の大きさ変更にも対応\r\n  resizeCanvas(windowWidth, windowHeight);\r\n}\r\n\r\nfunction draw(){                 //毎フレーム実行\r\n  background(160, 192, 255);     //空色の背景\r\n  const groundY = height * 0.8;\r\n  const size = height * 0.1;      // キャラクターのサイズ\r\n  fill(64, 192, 64);              // 地面\r\n  rect(0, groundY, width, height - groundY);\r\n  // キャラクターの左右移動 \r\nlet speed;\r\nif (keyIsDown(SHIFT)) {\r\n  speed = 4;\r\n} else {\r\n  speed = basespeed;\r\n}\r\nif (keyIsDown(RIGHT_ARROW)) {\r\n  x += speed;\r\n}\r\nif (keyIsDown(LEFT_ARROW)) {\r\n  x -= speed;\r\n}\r\n  // 重力\r\n  Gravity(groundY, size);  \r\n  // ジャンプ（上キー）\r\n  if (keyIsDown(UP_ARROW) && onGround) {\r\n    vy = -20;\r\n    onGround = false;\r\n  }\r\n\r\n  // 速くなりすぎないように制限\r\n  vx = constrain(vx, -20, 20);\r\n  vy = constrain(vy, -20, 20);\r\n\r\n  // キャラクターを描く\r\n  fill(0);\r\n  ellipse(x, y, size, size);\r\n  //カウントダウン表示\r\n  let time = (millis() - start) / 1000;\r\n  if(time < 3){\r\n    fill(255);\r\n    textSize(80);\r\n    textAlign(CENTER, CENTER);\r\n    text(3 - floor(time), width/2, height/2);\r\n    return;// まだ敵は動かさないので return\r\n  }\r\n  // ======== 敵の移動 ========\r\n  enemyX += enemySpeed;\r\n\r\n  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup\r\n   enemySpeed *= -1.1;\r\n  }\r\n\r\n  fill(255, 0, 0);          // 敵を描く（赤い丸）\r\n  ellipse(enemyX, enemyY, 50, 50);\r\n\r\n  gameOver(size);\r\n}\r\n\r\nfunction Gravity(groundY, size){\r\n  x += vx;\r\n  y += vy;    // 位置の更新\r\n  vy += g;    // 重力を加える\r\n\r\n  // 接地判定\r\n  if (y >= groundY - size / 2) {\r\n    y = groundY - size / 2;\r\n    vy = 0;\r\n    onGround = true; // 地面に着いた\r\n  } else {\r\n    onGround = false; // 空中\r\n  }\r\n}\r\n\r\nfunction gameOver(size){\r\n  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算\r\n  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 \r\n    noLoop();                             // アニメーションdraw()を止める\r\n   \r\n    //ゲームオーバー\r\n    fill(255, 0, 0);\r\n    textSize(50);\r\n    text(\"GAME OVER\", width/2, height/2);\r\n  }\r\n}\r\n"
+            }
+          ]
+        },
+        "classCode": ""
+      },
+      "classCode": ""
     }
   ]
 }

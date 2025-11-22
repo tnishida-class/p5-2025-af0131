@@ -1,55 +1,56 @@
-// 2D アニメーションゲームのようなインタラクション
-let x, y;
-let vx, vy;
-const g = 1;
-let enemyX, enemyY;
-let enemySpeed = 2.2;
-let startTime;
+//変数を準備する
+let x, y;             //プレーヤーの位置
+let vx, vy;           //プレーヤーの速度
+let basespeed = 2;        //通常の速度
+const g = 1;          //重力の大きさ
+let enemyX, enemyY;   //敵の位置
+let enemySpeed = 2.2; //敵の速度
+let start;            //ゲーム開始時刻
+let onGround = false;
 
-function setup(){
-  createCanvas(windowWidth, windowHeight);
+function setup(){     //最初に一度だけ実行
+  createCanvas(windowWidth, windowHeight);  //画面サイズをウィンドウに合わせる
+  //プレーヤーの初期位置
   x = width / 2;
   y = height / 2;
   vx = 0;
   vy = 0;
-
-  // 敵の位置を初期化
+  // 敵の初期位置
   enemyX = 0;
   enemyY = height * 0.8 - 50;   
-
-  startTime = millis();  // ゲーム開始時間を記録
+  // ゲーム開始時間を記録
+  start = millis();
 }
 
-function windowResized(){
+function windowResized(){     //画面の大きさ変更にも対応
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function draw(){
-  background(160, 192, 255);
-  const size = height * 0.1; // キャラクターのサイズ
+function draw(){                 //毎フレーム実行
+  background(160, 192, 255);     //空色の背景
   const groundY = height * 0.8;
-
-  // 地面
-  fill(64, 192, 64);
+  const size = height * 0.1;      // キャラクターのサイズ
+  fill(64, 192, 64);              // 地面
   rect(0, groundY, width, height - groundY);
-
   // キャラクターの左右移動 
-  let speed = 2; // 通常の速度
-  if (keyIsDown(LEFT_ARROW)) {
-    if (keyIsDown(SHIFT)) speed = 4.0;
-    x -= speed;
-  } 
-  if (keyIsDown(RIGHT_ARROW)) {
-    if (keyIsDown(SHIFT)) speed = 4.0;
-    x += speed;
-  }
-
+let speed;
+if (keyIsDown(SHIFT)) {
+  speed = 4;
+} else {
+  speed = basespeed;
+}
+if (keyIsDown(RIGHT_ARROW)) {
+  x += speed;
+}
+if (keyIsDown(LEFT_ARROW)) {
+  x -= speed;
+}
   // 重力
-  applyGravity(groundY, size);  
-
+  Gravity(groundY, size);  
   // ジャンプ（上キー）
-  if (keyIsDown(UP_ARROW) && y >= groundY- size/2) {
+  if (keyIsDown(UP_ARROW) && onGround) {
     vy = -20;
+    onGround = false;
   }
 
   // 速くなりすぎないように制限
@@ -59,68 +60,51 @@ function draw(){
   // キャラクターを描く
   fill(0);
   ellipse(x, y, size, size);
-  let elapsed = (millis() - startTime) / 1000;
-  
-  // ======== カウントダウン表示 ========
-  if(elapsed < 3){
+  //カウントダウン表示
+  let time = (millis() - start) / 1000;
+  if(time < 3){
     fill(255);
     textSize(80);
     textAlign(CENTER, CENTER);
-
-    let count = 3 - floor(elapsed);
-    text(count, width/2, height/2);
-
-    // まだ敵は動かさないので return
-    return;
+    text(3 - floor(time), width/2, height/2);
+    return;// まだ敵は動かさないので return
   }
-}
-
-function applyGravity(groundY, size){
-  // 位置の更新
-  x += vx;
-  y += vy;
-
-  // 重力
-  vy += g;
-
-  // 地面に着いたら止める（バウンドさせない）
-  if (y > groundY - size / 2){
-    y = groundY - size / 2;
-    vy = 0;
-  }
-
-    // ======== カウントダウン後だけ敵を動かす ========
-  if ((millis() - startTime) / 1000 >= 3){
-    enemyX += enemySpeed;
-
-    if(enemyX > width || enemyX < 0){
-      enemySpeed *= -1;
-    }
-
-    fill(255, 0, 0);
-    ellipse(enemyX, enemyY, 50, 50);
-
   // ======== 敵の移動 ========
   enemyX += enemySpeed;
 
-  // 端にぶつかったら反転
-  if(enemyX > width || enemyX < 0){
-   enemySpeed *= -1;
+  if(enemyX > width || enemyX < 0){ // 端にぶつかったら反転かつスピードup
+   enemySpeed *= -1.1;
   }
 
-  // 敵を描く（赤い丸）
-  fill(255, 0, 0);
+  fill(255, 0, 0);          // 敵を描く（赤い丸）
   ellipse(enemyX, enemyY, 50, 50);
 
-  // ======== 当たり判定 ========
-  // プレイヤーとの距離を計算
-  let d = dist(x, y, enemyX, enemyY);
+  gameOver(size);
+}
 
-    if(d < size/2 + 25){  //  プレイヤー半径 + 敵半径 
-      noLoop(); // アニメーション停止（ゲームオーバー）
-      fill(255, 0, 0);
-      textSize(50);
-      text("GAME OVER", width/2 - 150, height/2);
-    }
+function Gravity(groundY, size){
+  x += vx;
+  y += vy;    // 位置の更新
+  vy += g;    // 重力を加える
+
+  // 接地判定
+  if (y >= groundY - size / 2) {
+    y = groundY - size / 2;
+    vy = 0;
+    onGround = true; // 地面に着いた
+  } else {
+    onGround = false; // 空中
+  }
+}
+
+function gameOver(size){
+  let d = dist(x, y, enemyX, enemyY);     // プレイヤーとの距離を計算
+  if(d < size/2 + 25){                    //プレイヤー半径 + 敵半径 
+    noLoop();                             // アニメーションdraw()を止める
+   
+    //ゲームオーバー
+    fill(255, 0, 0);
+    textSize(50);
+    text("GAME OVER", width/2, height/2);
   }
 }
