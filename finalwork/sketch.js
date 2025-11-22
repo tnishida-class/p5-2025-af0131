@@ -1,10 +1,10 @@
 //変数を準備する
 let x, y;             //プレーヤーの位置
 let vx, vy;           //プレーヤーの速度
-let basespeed = 2;        //通常の速度
+let basespeed = 3;        //通常の速度
 const g = 1;          //重力の大きさ
 let enemyX, enemyY;   //敵の位置
-let enemySpeed = 2.2; //敵の速度
+let enemySpeed = 3.5; //敵の速度
 let start;            //ゲーム開始時刻
 let onGround = false;
 
@@ -35,7 +35,7 @@ function draw(){                 //毎フレーム実行
   // キャラクターの左右移動 
 let speed;
 if (keyIsDown(SHIFT)) {
-  speed = 4;
+  speed = 6;
 } else {
   speed = basespeed;
 }
